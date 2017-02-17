@@ -1,0 +1,6 @@
+[submodule "api/shuttle-export"]
+	path = api/shuttle-export
+	url = https://github.com/trevorprinn/shuttle-export.git
+[submodule "api/shuttle-export/shuttle-export"]
+	path = api/shuttle-export/shuttle-export
+	url = https://github.com/trevorprinn/shuttle-export.git
