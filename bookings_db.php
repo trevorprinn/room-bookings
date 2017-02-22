@@ -173,6 +173,20 @@ class bookings_db extends mysqli {
 		return $s->get_result();
 	}
 	
+	function get_bookings_wp() {
+		$q = 'Select Title, Date, Start, Duration, room.Name as RoomName, room.Color
+				from booking inner join room
+				on booking.Id_Room = room.Id_Room
+				Where Date >= ?
+				Order By Date, Start';
+		$now = getdate();
+		$start = sprintf('%04d-%02d-%02d', $now['year'], $now['mon'], $now['mday']); 
+		$s = $this->prepare($q);
+		$s->bind_param('s', $start);
+		$s->execute();
+		return $s->get_result();
+	}
+	
 	function get_booking($id) {
 		if ($id == 0) {
 			return ['Id_Booking' => 0, 'Id_Booker' => 0, 'Id_Room' => 0, 'Title' => '', 'BookingDate' => '', 'Start' => 12, 'Duration' => 4, 'Notes' => '', 'Color' => ''];	

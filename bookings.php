@@ -8,8 +8,6 @@ include('header.php');
 
 <h1>Bookings</h1>
 
-{{alldata}}
-
 <div class="form-inline">
 	<div class="form-group">
 		<label for="start" class="control-label">Start</label>
@@ -71,8 +69,6 @@ include('header.php');
 <script>
 var app = angular.module("bookings", ["datatables", "moment-picker"]);
 app.controller("bookingsctl", function($scope, $http, $window) {
-	//$scope.startDate = moment();
-	//$scope.endDate = moment().add(1, 'years');
 	
 	$scope.dtOptions = {};
         
