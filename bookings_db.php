@@ -174,7 +174,7 @@ class bookings_db extends mysqli {
 	}
 	
 	function get_bookings_wp() {
-		$q = 'Select Title, Date, Start, Duration, room.Name as RoomName, room.Color
+		$q = 'Select Date, Start, Duration, room.Name as RoomName, room.Color
 				from booking inner join room
 				on booking.Id_Room = room.Id_Room
 				Where Date >= ?
