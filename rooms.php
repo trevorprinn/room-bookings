@@ -8,18 +8,24 @@
 	<tr ng-repeat="room in rooms track by $index">
 		<td>
 			<input type="text" ng-model="room.Name">
+			<span>Confirmed Bookings:</span>
 			<input type="color" ng-model="room.Color">
+			<span>Provisional Bookings:</span>
+			<input type="color" ng-model="room.ColorProv">
 			<span ng-repeat="fac in room.facilities">
 				<br/><input type="checkbox" ng-change="changefac(room.Id_Room, fac.Id_Facility, fac.Used)" ng-model="fac.Used" ng-true-value="1" ng-false-value="0">{{fac.Name}}
 			</span>
 		</td>
-		<td><button ng-click="save(room.Id_Room, room.Name, room.Color)">Save</button></td>
+		<td><button ng-click="save(room.Id_Room, room.Name, room.Color, room.ColorProv)">Save</button></td>
 		<td><button ng-click="delete(room.Id_Room, $index)">Delete</button></td>
 	</tr>
 	<tr>
 		<td>
 			<input type="text" placeholder="New Room" ng-model="newRoom">
+			<span>Confirmed Bookings:</span>
 			<input type="color" ng-model="newColor">
+			<span>Provisional Bookings:</span>
+			<input type="color" ng-model="newColorProv">
 		</td>
 		<td><button ng-click="add()">Add</button>
 	</tr>
@@ -38,6 +44,7 @@ app.controller("rooms", function($scope, $http) {
 		});
 	$scope.newRoom = "";
 	$scope.newColor = 0;
+	$scope.newColorProv = 0;
 	
 	$scope.add = function () {
 		if ($scope.newRoom == "") {
@@ -46,19 +53,22 @@ app.controller("rooms", function($scope, $http) {
 		}
 		$http.post("update_room.php?action=add", {
 			'Name': $scope.newRoom,
-			'Color': $scope.newColor
+			'Color': $scope.newColor,
+			'ColorProv': $scope.newColorProv
 		}).then(function(response) {
 			$scope.rooms.push(response.data);
 			$scope.newRoom = "";
 			$scope.newColor = 0;
+			$scope.newColorProv = 0;
 		});
 	};
 	
-	$scope.save = function(id, name, color) {
+	$scope.save = function(id, name, color, colorProv) {
 		$http.post("update_room.php?action=update", {
 			'id': id,
 			'Name': name,
-			'Color': color
+			'Color': color,
+			'ColorProv': colorProv
 		});
 	};
 	$scope.changefac = function(roomid, facid, used) {

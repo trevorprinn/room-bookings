@@ -8,7 +8,12 @@ include('header.php');
 <h1>{{Heading}}</h1>
 
 <form class="form-horizontal" ng-submit="save()">
-
+	<div class="form-group">
+		<label for="Provisional" class="col-sm-2 control-label">Provisional</label>
+		<div class="col-sm-10">
+			<input type="checkbox" ng-model="booking.Provisional">
+		</div>
+	</div>
 	<div class="form-group">
 		<label for="Title" class="col-sm-2 control-label">Title</label>
 		<div class="col-sm-10">
@@ -138,6 +143,8 @@ app.controller("bookingctl", function($scope, $http, $window) {
 			if (id == 0 && time != null) {
 				$scope.booking.Start = parseInt(time);
 			}
+			
+			$scope.booking.Provisional = $scope.booking.Provisional == 1;
 
 			$scope.rooms = response.data.rooms;
 			$scope.bookers = response.data.bookers;

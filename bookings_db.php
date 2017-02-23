@@ -92,19 +92,19 @@ class bookings_db extends mysqli {
 		return $s->get_result();
 	}
 	
-	function add_room($name, $color) {
-		$q = "Insert into room (Name, Color, `Order`) Values (?, ?, ?)";
+	function add_room($name, $color, $colorprov) {
+		$q = "Insert into room (Name, Color, ColorProv, `Order`) Values (?, ?, ?, ?)";
 		$s = $this->prepare($q);
 		$max = $this->getmaxorder('room') + 1;
-		$s->bind_param('ssi', $name, $color, $max);
+		$s->bind_param('sssi', $name, $color, $colorprov, $max);
 		$s->execute();
 		return $this->insert_id;
 	}
 	
-	function rename_room($id, $name, $color) {
-		$q = "Update room Set Name = ?, Color = ? Where Id_Room = ?";
+	function rename_room($id, $name, $color, $colorprov) {
+		$q = "Update room Set Name = ?, Color = ?, ColorProv = ? Where Id_Room = ?";
 		$s = $this->prepare($q);
-		$s->bind_param('ssi', $name, $color, $id);
+		$s->bind_param('sssi', $name, $color, $colorprov, $id);
 		$s->execute();
 	}
 	
@@ -143,7 +143,8 @@ class bookings_db extends mysqli {
 	
 	function get_bookings($start = null, $end = null) {
 		$q = 'Select Id_Booking as Id, Title, booking.Id_Booker, Date, Start, Duration, DATE_FORMAT(Date, "%W %d %m %Y") as BookingDate,
-				room.Name as RoomName, booker.Name as BookerName, room.Color
+				room.Name as RoomName, booker.Name as BookerName, Provisional,
+				case Provisional when 1 then room.ColorProv else room.Color end as Color 
 				from booking Inner Join room
 				on booking.Id_Room = room.Id_Room
 				Left Join booker
@@ -174,7 +175,8 @@ class bookings_db extends mysqli {
 	}
 	
 	function get_bookings_wp() {
-		$q = 'Select Date, Start, Duration, room.Name as RoomName, room.Color
+		$q = 'Select Date, Start, Duration, room.Name as RoomName, Provisional,
+				case Provisional when 1 then room.ColorProv else room.Color end as Color 
 				from booking inner join room
 				on booking.Id_Room = room.Id_Room
 				Where Date >= ?
@@ -189,9 +191,10 @@ class bookings_db extends mysqli {
 	
 	function get_booking($id) {
 		if ($id == 0) {
-			return ['Id_Booking' => 0, 'Id_Booker' => 0, 'Id_Room' => 0, 'Title' => '', 'BookingDate' => '', 'Start' => 12, 'Duration' => 4, 'Notes' => '', 'Color' => ''];	
+			return ['Id_Booking' => 0, 'Id_Booker' => 0, 'Id_Room' => 0, 'Title' => '', 'BookingDate' => '', 'Start' => 12, 'Duration' => 4, 'Notes' => '', 'Color' => '', 'ColorProv' => '', 'Provisional' => 0];	
 		}
-		$q = 'Select booking.*, DATE_FORMAT(Date, "%d-%m-%Y") as BookingDate
+		$q = 'Select Id_Booking, Id_Booker, Id_Room, Title, Date, Notes, Start, Duration, Provisional,
+				DATE_FORMAT(Date, "%d-%m-%Y") as BookingDate
 				From booking
 				Where Id_Booking = ?';
 		$s = $this->prepare($q);
@@ -237,8 +240,8 @@ class bookings_db extends mysqli {
 		
 		$this->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 		
-		$q = $id == 0 ? "Insert into booking (Id_Booker, Id_Room, Title, Date, Start, Duration, Notes) Values (?, ?, ?, ?, ?, ?, ?)"
-			: "Update booking Set Id_Booker = ?, Id_Room = ?, Title = ?, Date = ?, Start = ?, Duration = ?, Notes = ?
+		$q = $id == 0 ? "Insert into booking (Id_Booker, Id_Room, Title, Date, Start, Duration, Notes, Provisional) Values (?, ?, ?, ?, ?, ?, ?, ?)"
+			: "Update booking Set Id_Booker = ?, Id_Room = ?, Title = ?, Date = ?, Start = ?, Duration = ?, Notes = ?, Provisional = ?
 				Where Id_Booking = ?";
 		$s = $this->prepare($q);
 		$date = date('Y-m-d', strtotime($fields['Date']));
@@ -246,9 +249,9 @@ class bookings_db extends mysqli {
 		$start = $fields['Start'];
 		if ($start + $duration > 24) $duration = 24 - $start;
 		if ($id == 0) {
-			$s->bind_param('iissiis', $bookerId, $fields['Id_Room'], $fields['Title'], $date, $start, $duration, $fields['Notes']);
+			$s->bind_param('iissiisi', $bookerId, $fields['Id_Room'], $fields['Title'], $date, $start, $duration, $fields['Notes'], $fields['Provisional']);
 		} else {
-			$s->bind_param('iissiisi', $bookerId, $fields['Id_Room'], $fields['Title'], $date, $start, $duration, $fields['Notes'], $id);
+			$s->bind_param('iissiisii', $bookerId, $fields['Id_Room'], $fields['Title'], $date, $start, $duration, $fields['Notes'], $fields['Provisional'], $id);
 		}
 		$s->execute();
 		

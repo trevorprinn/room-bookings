@@ -56,13 +56,15 @@ include('header.php');
 		<td>{{displayTime(booking)}}</td>
 		<td>{{booking.Date}}</td>
 		<td>{{booking.RoomName}}</td>
-		<td><a ng-click="displayBooking(booking.Id)" role="button">{{booking.Title}}</a></td>
+		<td><a ng-click="displayBooking(booking.Id)" role="button">{{booking.Title}}</a><span ng-show="booking.Provisional==1"><br/>(Provisional)</span></td>
 		<td><a ng-click="displayBooker(booking.Id_Booker)" role="button">{{booking.BookerName}}</a></td>
 		<td><button class="btn-xs" ng-click="deleteBooking(booking.Id, booking.Title, $index)">Delete</button></td>
 	</tr>
 	</tbody>
 </table>
 <button ng-click="displayBooking(0)">Create New Booking</button>
+
+
 
 </div>
 
