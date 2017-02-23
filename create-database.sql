@@ -49,6 +49,7 @@ CREATE TABLE `booking` (
   `Notes` text,
   `Start` int(11) NOT NULL,
   `Duration` int(11) NOT NULL,
+  `Provisional` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`Id_Booking`),
   KEY `fk_booking_booker_idx` (`Id_Booker`),
   KEY `fk_booking_room_idx` (`Id_Room`),
@@ -87,7 +88,7 @@ CREATE TABLE `facility` (
   `Order` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id_Facility`),
   UNIQUE KEY `Order_UNIQUE` (`Order`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,9 +103,10 @@ CREATE TABLE `room` (
   `Name` varchar(45) NOT NULL,
   `Order` int(11) DEFAULT NULL,
   `Color` varchar(15) NOT NULL,
+  `ColorProv` varchar(15) NOT NULL,
   PRIMARY KEY (`Id_Room`),
   UNIQUE KEY `Order_UNIQUE` (`Order`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,4 +143,4 @@ CREATE TABLE `room_facility` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-17 12:52:01
+-- Dump completed on 2017-02-23 13:09:53
