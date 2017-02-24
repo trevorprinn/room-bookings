@@ -39,6 +39,7 @@ class bookings_db extends mysqli {
 			$s->bind_param('sssssi', $fields['Name'], $fields['Address'], $fields['Phone'], $fields['Email'], $fields['Notes'], $id);
 		}
 		$s->execute();
+		return $this->insert_id;
 	} 
 	
 	function get_facilities() {
@@ -230,7 +231,7 @@ class bookings_db extends mysqli {
 		return $this->insert_id;
 	}
 	
-	function update_booking($fields) {
+	function update_booking($fields, $intrans = false) {
 		$id = $fields['Id_Booking'];
 		$bookerId = $fields['Id_Booker'];
 
@@ -238,7 +239,7 @@ class bookings_db extends mysqli {
 			$bookerId = $this->createBooker($fields['NewBooker']);
 		}		
 		
-		$this->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+		if (!$intrans) $this->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 		
 		$q = $id == 0 ? "Insert into booking (Id_Booker, Id_Room, Title, Date, Start, Duration, Notes, Provisional) Values (?, ?, ?, ?, ?, ?, ?, ?)"
 			: "Update booking Set Id_Booker = ?, Id_Room = ?, Title = ?, Date = ?, Start = ?, Duration = ?, Notes = ?, Provisional = ?
@@ -270,7 +271,7 @@ class bookings_db extends mysqli {
 			$s->execute();
 		}
 		
-		$this->commit();
+		if (!$intrans) $this->commit();
 	} 
 	
 	function delete_booking($id) {
@@ -287,6 +288,26 @@ class bookings_db extends mysqli {
 		$s->execute();
 		
 		$this->commit();
+	}
+	
+	function find_booker($name, $email) {
+		$q = "Select Id_Booker from booker Where Email = ? and Name = ? Limit 1";
+		$s = $this->prepare($q);
+		$s->bind_param('ss', $email, $name);
+		$s->execute();
+		$r = $s->get_result();
+		$fs = $r->fetch_assoc();
+		if ($fs != null) return $fs['Id_Booker']; 
+		
+		$q = "Select Id_Booker from booker Where Email = ? or Name = ? Limit 1";
+		$s = $this->prepare($q);
+		$s->bind_param('ss', $email, $name);
+		$s->execute();
+		$r = $s->get_result();
+		$fs = $r->fetch_assoc();
+		if ($fs != null) return $fs['Id_Booker']; 
+		
+		return 0;
 	}
 }
 
