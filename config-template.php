@@ -10,4 +10,9 @@ define('HEADING', 'Room Bookings');
 
 // The url to go to after logging out of the application
 define('LOGOUT_URL', 'http://www.google.com');
+
+// The details for the mail sent when a booking is made from the wordpress plugin 
+define('BOOKING_MAIL_RECIPIENTS', 'you@example.com');
+define('BOOKING_MAIL_SUBJECT', 'Booking posted from the website');
+define('BOOKING_FROM_ADDRESS', 'noreply@example.com');
 ?>

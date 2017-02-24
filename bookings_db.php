@@ -93,6 +93,17 @@ class bookings_db extends mysqli {
 		return $s->get_result();
 	}
 	
+	function get_room_name($roomid) {
+		$q = "Select Name from room Where Id_Room = ?";
+		$s = $this->prepare($q);
+		$s->bind_param('i', $roomid);
+		$s->execute();
+		$r = $s->get_result();
+		$f = $r->fetch_assoc();
+		if ($f == null) return "Unknown";
+		return $f['Name'];
+	}
+	
 	function add_room($name, $color, $colorprov) {
 		$q = "Insert into room (Name, Color, ColorProv, `Order`) Values (?, ?, ?, ?)";
 		$s = $this->prepare($q);
