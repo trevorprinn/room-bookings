@@ -23,6 +23,7 @@ try {
 		$bfields['Id_Booker'] = 0;
 		$bfields['Name'] = $postdata['BookerName'];
 		$bfields['Email'] = $postdata['BookerEmail'];
+		$bfields['Phone'] = $postdata['BookerPhone'];
 		$bookerId = $db->update_booker($bfields);
 	}
 	
@@ -42,9 +43,11 @@ try {
 	$msg = "A booking has been received from the website\r\n"
 			.'Name: '.$postdata['BookerName']."\r\n"
 			.'Email: '.$postdata['BookerEmail']."\r\n"
+			.'Phone: '.$postdata['BookerPhone']."\r\n"
 			.'Room: '.$db->get_room_name($postdata['Id_Room'])."\r\n"
 			.'Date: '.date('d/m/Y', strtotime($postdata['Date']))."\r\n"
 			.'Time: '.sprintf("%02d:00-%02d:00", $postdata['Start'], $postdata['Start'] + $postdata['Duration']);
+	if (isset($postdata['Notes'])) $msg = $msg."\r\n".$postdata['Notes'];
 	mail(BOOKING_MAIL_RECIPIENTS, BOOKING_MAIL_SUBJECT, $msg, "From: ".BOOKING_FROM_ADDRESS);
 	
 	$result['message'] = $msg;
