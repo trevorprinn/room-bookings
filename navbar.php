@@ -37,6 +37,7 @@ function backup() {
 	      		<ul class="dropdown-menu">
 		      		<li><a href="rooms.php">Rooms</a></li>		
 		      		<li><a href="facilities.php">Facilities</a></li>
+		      		<li><a href="bookers_merge.php">Merge Bookers</a></li>
 		      		<li><a href="javascript:backup()">Backup</a></li>	
 		      	</ul>
       		</li>
