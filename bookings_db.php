@@ -320,6 +320,35 @@ class bookings_db extends mysqli {
 		
 		return 0;
 	}
+	
+	function merge_bookers($ids, $fields) {
+		$keepid = $ids[0];
+		$otherids = $ids;
+		array_splice($otherids, 0, 1);
+		
+		$this->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+		
+		$q = 'Update booker Set Name = ?, Address = ?, Phone = ?, Email = ?, Notes = ? Where Id_Booker = ?';
+		$s = $this->prepare($q);
+		$s->bind_param('sssssi', $fields['Name'], $fields['Address'], $fields['Phone'], $fields['Email'], $fields['Notes'], $keepid);
+		$s->execute();
+		
+		$q = 'Update booking Set Id_Booker = ? Where Id_Booker = ?';
+		$s = $this->prepare($q);
+		foreach ($otherids as $otherid) {
+			$s->bind_param('ii', $keepid, $otherid);
+			$s->execute();
+		}				
+		
+		$q = 'Delete From booker Where Id_Booker = ?';
+		$s = $this->prepare($q);
+		foreach ($otherids as $otherid) {
+			$s->bind_param('i', $otherid);
+			$s->execute();
+		}
+		
+		$this->commit();
+	}
 }
 
 ?>

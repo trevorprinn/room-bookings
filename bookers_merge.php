@@ -15,8 +15,6 @@ include ('header.php');
 		<input type="checkbox" ng-model="booker.checked" ng-change="checkChanged()">
 		{{booker.Name}}
 	</p>
-	{{merged}}
-	{{mergeIds}}
 </div>
 <div class="col-lg-6 col-sm-6 right">
 	<form class="form-horizontal" ng-submit="submit()">
@@ -62,6 +60,7 @@ include ('header.php');
 var app = angular.module("bookings", []);
 app.controller("mergectl", function ($scope, $http) {
 	$scope.request = function () {
+		$scope.merged = { Name: "", Address: "", Phone: "", Email: "", Notes: "" };
 		$http.get("getdata.php?type=bookers")
 			.then(function (response) {
 				$scope.bookers = response.data;
@@ -87,9 +86,14 @@ app.controller("mergectl", function ($scope, $http) {
 	};
 	
 	$scope.submit = function () {
-		$http.post("update_merge.php", { ids: $scope.mergeIds, data: $scope.merged })
-			.then(function () {
-				$scope.request();
+		$http.post("update_merge_bookers.php", { ids: $scope.mergeIds, data: $scope.merged })
+			.then(function (response) {
+				$scope.result = response;
+				if ($scope.result.data.success) {
+					$scope.request();
+				}
+			}, function (response) {
+				$scope.result = response;
 			});
 	};
 	
