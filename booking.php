@@ -77,6 +77,7 @@ include('header.php');
 	<div class="form-group">
 		<div class="col-sm-10 col-sm-offset-2">
 			<input class="btn btn-primary" type="submit" value="{{btn}}">
+			<button type="button" ng-click="delete()">Delete</button>
 		</div>
 	</div>
 
@@ -169,6 +170,16 @@ app.controller("bookingctl", function($scope, $http, $window) {
 				$window.location.href = "bookings.php";
 			});
 	};
+	
+	$scope.delete = function () {
+		if ($window.confirm('Are you sure you want to delete this booking?')) {
+			$http.post("update_booking.php?action=delete", { 'Id_Booking': $scope.booking.Id_Booking })
+				.then(function(response) {
+					$window.location.href = "bookings.php";
+				});
+		}
+	};
+		
 });
 </script>
 
