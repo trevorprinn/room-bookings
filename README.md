@@ -10,7 +10,8 @@ This version is currently WIP, and will be modified as the club's requirements b
 2. Copy config-template.sql to config.sql and fill in the details of the database etc.
 3. Copy the files to the server (eg in a "bookings" folder). 
 4. Create a standard .htaccess file in the bookings folder to control access and allow logins.
-5. Ensure the api/temp folder allows the webserver user read/write access (this is used by the backup facility).
+5. Create another .htaccess file in the api folder to allow everyone access to it (if the wordpress plugin is in use).
+6. Ensure the api/temp folder allows the webserver user read/write access (this is used by the backup facility).
 
 ## Database backup ##
 
