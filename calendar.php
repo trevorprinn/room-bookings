@@ -12,6 +12,26 @@ $(document).ready(function() {
 			right: 'today agendaWeek,month prev,next'
 		},
 		events: 'calbookings.php',
+		eventMouseover: function (calEvent, jsEvent) {
+			var start = moment(calEvent.start);
+			var end = moment(calEvent.end);
+			var msg = start.format('DD MMM YYYY HA') + '-' + end.format('HA') + '<br/>' + calEvent.title;
+			if (calEvent.provisional) msg += "<br/>(Provisional)";
+			var tooltip = '<div class="tooltipevent" style="background:#ccc;position:absolute;z-index:10001;">' + msg + '</div>';
+			$("body").append(tooltip);
+    		$(this).mouseover(function(e) {
+		        $(this).css('z-index', 10000);
+		        $('.tooltipevent').fadeIn('500');
+		        $('.tooltipevent').fadeTo('10', 1.9);
+		   }).mousemove(function(e) {
+		        $('.tooltipevent').css('top', e.pageY + 10);
+		        $('.tooltipevent').css('left', e.pageX + 20);
+		   });
+		},
+		eventMouseout: function(calEvent, jsEvent) {
+		     $(this).css('z-index', 8);
+		     $('.tooltipevent').remove();
+		},
 		dayClick: function (date, jsEvent, view) {
 			var d = date.format('DD-MM-YYYY');
 			var t = date.get('hour');

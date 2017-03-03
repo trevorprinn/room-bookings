@@ -10,6 +10,7 @@ class bookingdata {
 	public $url;
 	public $end;
 	public $backgroundColor;
+	public $provisional;
 	
 	function __construct($booking) {
 		$this->title = $booking['Title'];
@@ -26,6 +27,7 @@ class bookingdata {
 		$this->end = $endDate.'T'.sprintf("%02d", $endTime).':00:00';
 		$this->url = 'booking.php?id='.$booking['Id'];
 		$this->backgroundColor = $booking['Color'];
+		$this->provisional = $booking['Provisional'] == 1;
 	}	
 }
 
