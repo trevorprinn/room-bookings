@@ -186,17 +186,19 @@ class bookings_db extends mysqli {
 		return $s->get_result();
 	}
 	
-	function get_bookings_wp() {
+	function get_bookings_wp($start, $end) {
 		$q = 'Select Date, Start, Duration, room.Name as RoomName, Provisional,
 				case Provisional when 1 then room.ColorProv else room.Color end as Color 
 				from booking inner join room
 				on booking.Id_Room = room.Id_Room
-				Where Date >= ?
+				Where Date >= ? and Date <= ?
 				Order By Date, Start';
-		$now = getdate();
-		$start = sprintf('%04d-%02d-%02d', $now['year'], $now['mon'], $now['mday']); 
+		$now = getdate()['0'];
+		$start = strtotime($start);
+		if ($start < $now) $start = $now;
+		$start = date('Y-m-d', $start);
 		$s = $this->prepare($q);
-		$s->bind_param('s', $start);
+		$s->bind_param('ss', $start, $end);
 		$s->execute();
 		return $s->get_result();
 	}

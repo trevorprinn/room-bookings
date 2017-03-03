@@ -2,7 +2,9 @@
 include('bookings_db.php');
 
 $db = new bookings_db();
-$bookings = $db->get_bookings();
+$start = $_GET['start'];
+$end = $_GET['end'];
+$bookings = $db->get_bookings($start, $end);
 
 class bookingdata {
 	public $title;

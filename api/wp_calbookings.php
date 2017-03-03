@@ -5,7 +5,9 @@ header("Access-Control-Allow-Origin: *");
 include('../bookings_db.php');
 
 $db = new bookings_db();
-$bookings = $db->get_bookings_wp();
+$start = $_GET['start'];
+$end = $_GET['end'];
+$bookings = $db->get_bookings_wp($start, $end);
 
 class bookingdata {
 	public $title;
