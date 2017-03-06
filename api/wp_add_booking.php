@@ -49,7 +49,8 @@ try {
 				.'Date: '.date('d/m/Y', strtotime($postdata['Date']))."\r\n"
 				.'Time: '.sprintf("%02d:00-%02d:00", $postdata['Start'], $postdata['Start'] + $postdata['Duration']);
 		if (isset($postdata['Notes'])) $msg = $msg."\r\n".$postdata['Notes'];
-		mail(BOOKING_MAIL_RECIPIENTS, BOOKING_MAIL_SUBJECT, $msg, "From: ".BOOKING_FROM_ADDRESS);
+		$from = BOOKING_FROM_ADDRESS == "" ? "" : "From: ".BOOKING_FROM_ADDRESS;
+		mail(BOOKING_MAIL_RECIPIENTS, BOOKING_MAIL_SUBJECT, $msg, $from);
 		
 		$result['message'] = $msg; // For debug
 	}
