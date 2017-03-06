@@ -9,7 +9,7 @@ function logoutfully(safeLocation, redirUrl) {
 };
 
 function backup() {
-	$.get("api/backup-db.php?geturl", function(backupurl) {
+	$.get("backup-db.php?geturl", function(backupurl) {
 		location.href = backupurl;
 	});
 }

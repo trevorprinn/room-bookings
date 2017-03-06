@@ -1,6 +1,6 @@
 <?php
-include('shuttle-export/dumper.php');
-include('../config.php');
+include('api/shuttle-export/dumper.php');
+include('config.php');
 
 $done = 0;
 $senddata = !isset($_GET['geturl']);
@@ -12,7 +12,7 @@ try {
 		'db_name' => DB_NAME
 	]);
 	
-	$file = 'temp/backup.sql.gz';
+	$file = 'api/temp/backup.sql.gz';
 	$dumper->dump($file);
 	$done = 1;
 } catch(Shuttle_Exception $e) {

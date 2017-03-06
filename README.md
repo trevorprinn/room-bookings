@@ -18,14 +18,14 @@ This version is currently WIP, and will be modified as the club's requirements b
 There are 2 ways to download a database backup (including database definition and data):
 
 1. From the Manage menu on the Nav Bar.
-2. By sending a GET request to `http://yourserver/bookings/api/backup-db.php`.
+2. By sending a GET request to `http://yourserver/bookings/backup-db.php`.
 
 Note that credentials set in the .htaccess file would need to be sent in the GET in the latter case.
 
 For example, in C#
 
 ```C#
-string url = "http://example.com/bookings/api/backup-db.php";
+string url = "http://example.com/bookings/backup-db.php";
 var req = (HttpWebRequest)WebRequest.Create(url);
 req.Credentials = new NetworkCredential("boss", "password");
 req.Method = "GET";
