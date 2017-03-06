@@ -5,7 +5,10 @@ header("Access-Control-Allow-Origin: *");
 include('../bookings_db.php');
 $db = new bookings_db();
 
-$rows = $db->get_bookings_wp();
+$start = date('Y-m-d', getdate()['0']);
+// Add about 10 years
+$end = date('Y-m-d', getdate()['0'] + 315360000);
+$rows = $db->get_bookings_wp($start, $end);
 
 $data = [];
 while ($row = $rows->fetch_assoc()) {
