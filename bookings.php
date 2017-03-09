@@ -52,7 +52,7 @@ include('header.php');
 	<tbody>
 	
 	<tr ng-repeat="booking in bookings track by $index">
-		<td>{{booking.BookingDate}}</td>
+		<td>{{displayDate(booking)}}</td>
 		<td>{{displayTime(booking)}}</td>
 		<td>{{booking.Date}}</td>
 		<td>{{booking.RoomName}}</td>
@@ -110,6 +110,10 @@ app.controller("bookingsctl", function($scope, $http, $window) {
 			.then(function (response) {
 				$scope.request();
 			});
+	};
+	
+	$scope.displayDate = function (booking) {
+		return moment(booking.Date).format('ddd D MMM YYYY');
 	};
 	
 	$scope.displayTime = function(booking) {

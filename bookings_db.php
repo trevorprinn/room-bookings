@@ -154,7 +154,7 @@ class bookings_db extends mysqli {
 	}
 	
 	function get_bookings($start = null, $end = null) {
-		$q = 'Select Id_Booking as Id, Title, booking.Id_Booker, Date, Start, Duration, DATE_FORMAT(Date, "%W %d %m %Y") as BookingDate,
+		$q = 'Select Id_Booking as Id, Title, booking.Id_Booker, Date, Start, Duration,
 				room.Name as RoomName, booker.Name as BookerName, Provisional,
 				case Provisional when 1 then room.ColorProv else room.Color end as Color 
 				from booking Inner Join room
@@ -207,8 +207,7 @@ class bookings_db extends mysqli {
 		if ($id == 0) {
 			return ['Id_Booking' => 0, 'Id_Booker' => 0, 'Id_Room' => 0, 'Title' => '', 'BookingDate' => '', 'Start' => 12, 'Duration' => 4, 'Notes' => '', 'Color' => '', 'ColorProv' => '', 'Provisional' => 0];	
 		}
-		$q = 'Select Id_Booking, Id_Booker, Id_Room, Title, Date, Notes, Start, Duration, Provisional,
-				DATE_FORMAT(Date, "%d-%m-%Y") as BookingDate
+		$q = 'Select Id_Booking, Id_Booker, Id_Room, Title, Date, Notes, Start, Duration, Provisional
 				From booking
 				Where Id_Booking = ?';
 		$s = $this->prepare($q);

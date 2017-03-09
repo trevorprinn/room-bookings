@@ -31,7 +31,7 @@ if ($type == "facilities") {
 	$booking = $db->get_booking($id);
 	$booking['facilities'] = $db->get_booking_facilities($id);
 	if ($id == 0 && isset($_GET['date'])) {
-		$booking['BookingDate'] = $_GET['date'];
+		$booking['Date'] = $_GET['date'];
 	}
 	if ($id == 0 && isset($_GET['time'])) {
 		$booking['Start'] = $_GET['time'];
