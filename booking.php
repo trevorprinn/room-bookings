@@ -69,7 +69,7 @@ include('header.php');
 	<div class="form-group">
 		<label for="booking.Start" class="col-sm-2 control-label">Start Time</label>
 		<div class="col-sm-2">
-			<select class="form-control" ng-model="booking.Start" ng-options="x for x in StartTimes">
+			<select class="form-control" ng-model="booking.Start" ng-options="x.hour as x.display for x in StartTimes" ng-change="checkDuration()">
 			</select>
 		</div>
 		<label for="booking.Duration" class="col-sm-2 control-label">Duration (Hours)</label>
@@ -164,7 +164,12 @@ app.controller("bookingctl", function($scope, $http, $window) {
 			$scope.Heading = id == 0 ? "Create new Booking" : "Edit Booking";
 			$scope.btn = id == 0 ? "Create" : "Update";
 			
-			$scope.StartTimes = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+			$scope.StartTimes = [];
+			for (var i = 9; i < 24; i++) {
+				var t = { hour: i, display: moment({hour: i}).format('h A') };
+				$scope.StartTimes.push(t);
+			}
+			
 			$scope.Durations = [1, 2, 3, 4, 5, 6];
 			
 			$scope.newRoom($scope.booking.Id_Room);
@@ -199,6 +204,12 @@ app.controller("bookingctl", function($scope, $http, $window) {
 	$scope.setTime = function () {
 		$scope.booking.Start = $scope.timebands[$scope.timeband][0];
 		$scope.booking.Duration = $scope.timebands[$scope.timeband][1];
+	};
+	
+	$scope.checkDuration = function () {
+		if ($scope.booking.Start + $scope.booking.Duration > 24) {
+			$scope.booking.Duration = 24 - $scope.booking.Start;
+		}
 	};
 		
 });
