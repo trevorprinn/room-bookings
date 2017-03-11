@@ -15,4 +15,7 @@ define('LOGOUT_URL', 'http://www.google.com');
 define('BOOKING_MAIL_RECIPIENTS', 'you@example.com');
 define('BOOKING_MAIL_SUBJECT', 'Booking posted from the website');
 define('BOOKING_FROM_ADDRESS', 'noreply@example.com');
+
+// The time bands (morning, afternoon, evening, as time/duration)
+define('TIME_BANDS', [[9, 4],[14, 4],[19, 4]]);
 ?>

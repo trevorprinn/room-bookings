@@ -39,6 +39,7 @@ if ($type == "facilities") {
 	$data['booking'] = $booking;
 	$data['rooms'] = get_all_room_data($db); 
 	$data['bookers'] = get_all_bookers($db);
+	$data['timebands'] = TIME_BANDS;
 } else if ($type == "session") {
 	$data = $_SESSION;
 }

@@ -54,14 +54,24 @@ include('header.php');
 		     	ng-model="booking.Date">
 		</div>
 	</div>
+	<div class="form-group" ng-show="booking.Id_Booking == 0">
+		<label for="time-band" class="col-sm-2 control-label"></label>
+		<div class="col-sm-2">
+			<input type="radio" ng-model="timeband" value="0" ng-change="setTime()">Morning 
+		</div>
+		<div class="col-sm-2">
+			<input type="radio" ng-model="timeband" value="1" ng-change="setTime()">Afternoon 
+		</div>
+		<div class="col-sm-2">
+			<input type="radio" ng-model="timeband" value="2" ng-change="setTime()">Evening
+		</div>
+	</div>
 	<div class="form-group">
 		<label for="booking.Start" class="col-sm-2 control-label">Start Time</label>
 		<div class="col-sm-2">
 			<select class="form-control" ng-model="booking.Start" ng-options="x for x in StartTimes">
 			</select>
 		</div>
-	</div>
-	<div class="form-group">
 		<label for="booking.Duration" class="col-sm-2 control-label">Duration (Hours)</label>
 		<div class="col-sm-2">
 			<select class="form-control" ng-model="booking.Duration" ng-options="x for x in Durations">
@@ -149,6 +159,7 @@ app.controller("bookingctl", function($scope, $http, $window) {
 
 			$scope.rooms = response.data.rooms;
 			$scope.bookers = response.data.bookers;
+			$scope.timebands = response.data.timebands;
 			
 			$scope.Heading = id == 0 ? "Create new Booking" : "Edit Booking";
 			$scope.btn = id == 0 ? "Create" : "Update";
@@ -157,6 +168,11 @@ app.controller("bookingctl", function($scope, $http, $window) {
 			$scope.Durations = [1, 2, 3, 4, 5, 6];
 			
 			$scope.newRoom($scope.booking.Id_Room);
+			
+			if (id == 0) {
+				$scope.timeband = "2"; // Default to evening times
+				$scope.setTime();
+			}
 		});
 		
 	$scope.newBookerClick = function () {
@@ -178,6 +194,11 @@ app.controller("bookingctl", function($scope, $http, $window) {
 					$window.location.href = "bookings.php";
 				});
 		}
+	};
+	
+	$scope.setTime = function () {
+		$scope.booking.Start = $scope.timebands[$scope.timeband][0];
+		$scope.booking.Duration = $scope.timebands[$scope.timeband][1];
 	};
 		
 });
