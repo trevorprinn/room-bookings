@@ -8,11 +8,11 @@
 	<tr ng-repeat="fac in facilities track by $index">
 		<td><input ng-model="fac.Name"></td>
 		<td><button ng-click="update(fac.Id_Facility, fac.Name)">Save</button></td>
-		<td><button ng-click="delete(fac.Id_Facility, $index)">Delete</button></td>
+		<td><button ng-click="delete(fac, $index)">Delete</button></td>
 	</tr>
 	<tr>
-		<td><input ng-model="newName" placeholder="New Facility"></td>
-		<td><button ng-click="addNew()">Add</button></td>
+		<td><input ng-model="newName" placeholder="New Facility" required></td>
+		<td><button ng-click="addNew()" ng-disabled="newName == '' || newName == null">Add</button></td>
 	</tr>
 </table>
 </div>
@@ -28,10 +28,6 @@ app.controller("facs", function($scope, $http) {
 	$scope.newName = "";	
 	
 	$scope.addNew = function() {
-		if ($scope.newName == "") {
-			alert("You need to enter a facility name first");
-			return;
-		};
 		$http.post("update_facility.php?action=add", {
 				'Name': $scope.newName
 			})
@@ -46,9 +42,10 @@ app.controller("facs", function($scope, $http) {
 			'Name': name
 		}); 
 	};
-	$scope.delete = function(id, ix) {
+	$scope.delete = function(facility, ix) {
+		if (!confirm("Delete the facility '" + facility.Name + "'?")) return;
 		$http.post("update_facility.php?action=delete", {
-			'id': id
+			'id': facility.Id_Facility
 		});
 		$scope.facilities.splice(ix, 1);
 	};

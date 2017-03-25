@@ -17,17 +17,17 @@
 			</span>
 		</td>
 		<td><button ng-click="save(room.Id_Room, room.Name, room.Color, room.ColorProv)">Save</button></td>
-		<td><button ng-click="delete(room.Id_Room, $index)">Delete</button></td>
+		<td><button ng-click="delete(room, $index)">Delete</button></td>
 	</tr>
 	<tr>
 		<td>
-			<input type="text" placeholder="New Room" ng-model="newRoom">
+			<input type="text" placeholder="New Room" ng-model="newRoom" required>
 			<span>Confirmed Bookings:</span>
-			<input type="color" ng-model="newColor">
+			<input type="color" ng-model="newColor" ng-disabled="newRoom == '' || newRoom == null">
 			<span>Provisional Bookings:</span>
-			<input type="color" ng-model="newColorProv">
+			<input type="color" ng-model="newColorProv" ng-disabled="newRoom == '' || newRoom == null">
 		</td>
-		<td><button ng-click="add()">Add</button>
+		<td><button ng-click="add()" ng-disabled="newRoom == '' || newRoom == null">Add</button>
 	</tr>
 
 </table>
@@ -47,10 +47,6 @@ app.controller("rooms", function($scope, $http) {
 	$scope.newColorProv = 0;
 	
 	$scope.add = function () {
-		if ($scope.newRoom == "") {
-			alert("You must enter a new Room name");
-			return;
-		}
 		$http.post("update_room.php?action=add", {
 			'Name': $scope.newRoom,
 			'Color': $scope.newColor,
@@ -78,9 +74,10 @@ app.controller("rooms", function($scope, $http) {
 			'available': used == 1
 		});
 	};
-	$scope.delete = function(id, ix) {
+	$scope.delete = function(room, ix) {
+		if (!confirm("Delete the room '" + room.Name + "'?")) return;
 		$http.post("update_room.php?action=delete", {
-			'id': id
+			'id': room.Id_Room
 		});
 		$scope.rooms.splice(ix, 1);
 	};

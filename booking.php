@@ -17,24 +17,26 @@ include('header.php');
 	<div class="form-group">
 		<label for="Title" class="col-sm-2 control-label">Title</label>
 		<div class="col-sm-10">
-			<input class="form-control" type="text" ng-model="booking.Title">
+			<input class="form-control" type="text" ng-model="booking.Title" required>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="booking.Id_Booker" class="col-sm-2 control-label">Booker</label>
 		<div class="col-sm-10">
-			<select class="form-control" ng-model="booking.Id_Booker" ng-hide="UseNewBooker">
+			<select class="form-control" ng-model="booking.Id_Booker" ng-hide="UseNewBooker" ng-required="!UseNewBooker">
+				<option></option>
 				<option ng_repeat="booker in bookers" value="{{booker.Id_Booker}}">{{booker.Name}}</option>
 			</select>
-			<input class="form-control" type="text" ng-model="booking.NewBooker" ng-show="UseNewBooker">
+			<input class="form-control" type="text" ng-model="booking.NewBooker" ng-show="UseNewBooker" ng-required="UseNewBooker">
 			<button type="button" ng-show="ShowNewBooker" ng-click="newBookerClick()">New</button>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="booking.Id_Room" class="col-sm-2 control-label">Room</label>
 		<div class="col-sm-10">
-			<select class="form-control" ng-model="booking.Id_Room" ng-change="newRoom(booking.Id_Room)">
-				<option ng_repeat="room in rooms" value="{{room.Id_Room}}">{{room.Name}}</option>
+			<select class="form-control" ng-model="booking.Id_Room" ng-change="newRoom(booking.Id_Room)" required>
+				<option></option>
+				<option ng-repeat="room in rooms" value="{{room.Id_Room}}">{{room.Name}}</option>
 			</select>
 			<span ng-repeat="fac in facilities">
 				<br/><input type="checkbox" ng-change="facChanged(fac.Id_Facility, fac.checked)" ng-model="fac.checked">{{fac.Name}}
@@ -51,7 +53,8 @@ include('header.php');
 		     	autoclose="true"
 		     	today="true"
 		     	start-view="month"
-		     	ng-model="booking.Date">
+		     	ng-model="booking.Date"
+		     	required>
 		</div>
 	</div>
 	<div class="form-group" ng-show="booking.Id_Booking == 0">
@@ -144,8 +147,8 @@ app.controller("bookingctl", function($scope, $http, $window) {
 		.then(function (response) {
 			$scope.booking = response.data.booking;
 			
-			$scope.booking.Id_Booker = $scope.booking.Id_Booker.toString(); // For the Select
-			$scope.booking.Id_Room = $scope.booking.Id_Room.toString(); // For the Select
+			$scope.booking.Id_Booker = $scope.booking.Id_Booker == 0 ? "" : $scope.booking.Id_Booker.toString(); // For the Select
+			$scope.booking.Id_Room = $scope.booking.Id_Room == 0 ? "" : $scope.booking.Id_Room.toString(); // For the Select
 			if (id == 0 && date != null) {
 				$scope.booking.Date = moment(date);
 			} else {
