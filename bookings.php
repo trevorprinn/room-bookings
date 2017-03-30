@@ -72,7 +72,11 @@ include('header.php');
 var app = angular.module("bookings", ["datatables", "moment-picker"]);
 app.controller("bookingsctl", function($scope, $http, $window) {
 	
-	$scope.dtOptions = {};
+	$scope.dtOptions = {
+		'language': {
+			'emptyTable': 'No bookings in the date range'
+		}
+	};
         
 	$scope.dtColumnDefs = [
 		{ 'orderData': [2], 'targets': [0]},
