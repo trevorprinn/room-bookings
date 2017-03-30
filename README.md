@@ -2,8 +2,6 @@
 
 This is a web based room booking system, designed for a social club to manage its rooms. It requires a PHP server and a MySQL database. The client code should run in any reasonably up to date browser on desktop, tablet and phone, and uses Angular, jQuery and Bootstrap. It includes an api call to back up the database to the calling machine.
 
-This version is currently WIP, and will be modified as the club's requirements become clear (for example, the time and duration components of a booking may be removed and replaced with a morning/afternoon/evening flag).
-
 ## Installation ##
 
 1. Run the create-database.sql script on an empty MySQL schema.
@@ -47,4 +45,4 @@ Everything else should be pretty straightforward.
 
 There is also a Wordpress plugin available at https://github.com/trevorprinn/room-bookings-ui. This allows
 some of the information about future bookings to be displayed on a Wordpress site, either as a table
-or a calendar. This plugin is also WIP.
+or a calendar.
