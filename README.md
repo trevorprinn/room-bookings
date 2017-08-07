@@ -44,5 +44,5 @@ Everything else should be pretty straightforward.
 ## Wordpress plugin ##
 
 There is also a Wordpress plugin available at https://github.com/trevorprinn/room-bookings-ui. This allows
-some of the information about future bookings to be displayed on a Wordpress site, either as a table
-or a calendar.
+some of the information about future bookings to be displayed on a Wordpress site, as a table
+and/or a calendar, and allows users to add provisional bookings.
