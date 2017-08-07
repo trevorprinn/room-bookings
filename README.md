@@ -5,7 +5,7 @@ This is a web based room booking system, designed for a social club to manage it
 ## Installation ##
 
 1. Run the create-database.sql script on an empty MySQL schema.
-2. Copy config-template.sql to config.sql and fill in the details of the database etc.
+2. Copy config-template.php to config.php and fill in the details of the database etc.
 3. Copy the files to the server (eg in a "bookings" folder). 
 4. Create a standard .htaccess file in the bookings folder to control access and allow logins.
 5. Create another .htaccess file in the api folder to allow everyone access to it (if the wordpress plugin is in use).
